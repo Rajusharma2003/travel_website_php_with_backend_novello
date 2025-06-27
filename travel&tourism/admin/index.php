@@ -16,35 +16,27 @@ $pending_booking_count = 0;
 
 // Count users
 $sql = "SELECT COUNT(*) as count FROM users WHERE is_admin = 0";
-$result = mysqli_query($conn, $sql);
-if($result){
-    $row = mysqli_fetch_assoc($result);
-    $user_count = $row['count'];
-}
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$user_count = $stmt->fetchColumn();
 
 // Count tours
 $sql = "SELECT COUNT(*) as count FROM tours";
-$result = mysqli_query($conn, $sql);
-if($result){
-    $row = mysqli_fetch_assoc($result);
-    $tour_count = $row['count'];
-}
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$tour_count = $stmt->fetchColumn();
 
 // Count bookings
 $sql = "SELECT COUNT(*) as count FROM bookings";
-$result = mysqli_query($conn, $sql);
-if($result){
-    $row = mysqli_fetch_assoc($result);
-    $booking_count = $row['count'];
-}
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$booking_count = $stmt->fetchColumn();
 
 // Count pending bookings
 $sql = "SELECT COUNT(*) as count FROM bookings WHERE status = 'pending'";
-$result = mysqli_query($conn, $sql);
-if($result){
-    $row = mysqli_fetch_assoc($result);
-    $pending_booking_count = $row['count'];
-}
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$pending_booking_count = $stmt->fetchColumn();
 ?>
 
 <!DOCTYPE html>
@@ -63,8 +55,6 @@ if($result){
 
     <div class="container-fluid">
         <div class="row">
-            
-
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Dashboard</h1>
@@ -156,6 +146,7 @@ if($result){
                                                 <th>User</th>
                                                 <th>Tour</th>
                                                 <th>Travel Date</th>
+                                                <th>Booking Date</th>
                                                 <th>People</th>
                                                 <th>Total</th>
                                                 <th>Status</th>
@@ -165,22 +156,24 @@ if($result){
                                         <tbody>
                                             <?php
                                             // Get recent bookings
-                                            $sql = "SELECT b.booking_id, u.username, t.tour_name, b.travel_date, b.number_of_people, b.total_price, b.status 
+                                            $sql = "SELECT b.booking_id, u.username, t.tour_name, b.travel_date,b.booking_date, b.number_of_people, b.total_price, b.status 
                                                     FROM bookings b 
                                                     JOIN users u ON b.user_id = u.user_id 
                                                     JOIN tours t ON b.tour_id = t.tour_id 
                                                     ORDER BY b.booking_date DESC LIMIT 5";
-                                            $result = mysqli_query($conn, $sql);
+                                            $stmt = $pdo->prepare($sql);
+                                            $stmt->execute();
                                             
-                                            if(mysqli_num_rows($result) > 0){
-                                                while($row = mysqli_fetch_assoc($result)){
+                                            if($stmt->rowCount() > 0){
+                                                while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
                                                     echo "<tr>";
                                                     echo "<td>" . $row['booking_id'] . "</td>";
                                                     echo "<td>" . $row['username'] . "</td>";
                                                     echo "<td>" . $row['tour_name'] . "</td>";
                                                     echo "<td>" . $row['travel_date'] . "</td>";
+                                                    echo "<td>" . $row['booking_date'] . "</td>";
                                                     echo "<td>" . $row['number_of_people'] . "</td>";
-                                                    echo "<td>$" . $row['total_price'] . "</td>";
+                                                    echo "<td>₹" . $row['total_price'] . "</td>";
                                                     echo "<td>";
                                                     if($row['status'] == 'pending'){
                                                         echo "<span class='badge badge-warning'>Pending</span>";
@@ -199,7 +192,7 @@ if($result){
                                                     echo "</tr>";
                                                 }
                                             } else {
-                                                echo "<tr><td colspan='8' class='text-center'>No bookings found</td></tr>";
+                                                echo "<tr><td colspan='9'>No recent bookings found.</td></tr>";
                                             }
                                             ?>
                                         </tbody>
@@ -213,8 +206,10 @@ if($result){
         </div>
     </div>
 
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>

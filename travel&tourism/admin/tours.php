@@ -8,12 +8,10 @@ check_login();
 
 // Fetch all tours from the database
 $sql = "SELECT t.*, tc.category_name FROM tours t JOIN tour_categories tc ON t.category_id = tc.category_id ORDER BY t.created_at DESC";
-$result = mysqli_query($conn, $sql);
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Check for query errors
-if (!$result) {
-    die("Error fetching tours: " . mysqli_error($conn));
-}
 ?>
 
 <!DOCTYPE html>
@@ -60,8 +58,8 @@ if (!$result) {
                         </thead>
                         <tbody>
                             <?php
-                            if (mysqli_num_rows($result) > 0) {
-                                while ($row = mysqli_fetch_assoc($result)) {
+                            if (count($tours) > 0) {
+                                foreach ($tours as $row) {
                                     echo "<tr>";
                                     echo "<td>" . $row['tour_id'] . "</td>";
                                     echo "<td>" . $row['tour_name'] . "</td>";

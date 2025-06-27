@@ -10,10 +10,11 @@ $errors = [];
 
 // Fetch categories for the dropdown
 $categories_sql = "SELECT category_id, category_name FROM tour_categories ORDER BY category_name ASC";
-$categories_result = mysqli_query($conn, $categories_sql);
-
-if (!$categories_result) {
-    die("Error fetching categories: " . mysqli_error($conn));
+try {
+    $categories_stmt = $pdo->query($categories_sql);
+    $categories_result = $categories_stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error fetching categories: " . $e->getMessage());
 }
 
 $featured_image = ''; // Initialize featured_image variable
@@ -91,15 +92,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($errors)) {
         $insert_sql = "INSERT INTO tours (tour_name, description, price, duration, location, category_id, featured, featured_image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        if ($stmt = mysqli_prepare($conn, $insert_sql)) {
-            mysqli_stmt_bind_param($stmt, "ssdssiis", $tour_name, $description, $price, $duration, $location, $category_id, $featured, $featured_image);
-            if (mysqli_stmt_execute($stmt)) {
-                header("location: tours.php");
-                exit();
-            } else {
-                $errors[] = "Error: Could not execute query. " . mysqli_error($conn);
-            }
-            mysqli_stmt_close($stmt);
+        try {
+            $stmt = $pdo->prepare($insert_sql);
+            $stmt->execute([$tour_name, $description, $price, $duration, $location, $category_id, $featured, $featured_image]);
+            header("location: tours.php");
+            exit();
+        } catch (PDOException $e) {
+            $errors[] = "Error: Could not execute query. " . $e->getMessage();
         }
     }
 }
@@ -162,9 +161,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <label for="category_id">Category</label>
                         <select class="form-control" id="category_id" name="category_id" required>
                             <option value="">Select a category</option>
-                            <?php while ($category = mysqli_fetch_assoc($categories_result)): ?>
+                            <?php foreach ($categories_result as $category): ?>
                                 <option value="<?php echo $category['category_id']; ?>" <?php echo ($category['category_id'] == $category_id) ? 'selected' : ''; ?>><?php echo htmlspecialchars($category['category_name']); ?></option>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="form-group">

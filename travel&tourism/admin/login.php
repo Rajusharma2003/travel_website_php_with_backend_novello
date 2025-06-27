@@ -37,23 +37,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         // Prepare a select statement
         $sql = "SELECT user_id, username, password, is_admin FROM users WHERE username = ? AND is_admin = 1";
         
-        if($stmt = mysqli_prepare($conn, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-            
-            // Set parameters
-            $param_username = $username;
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
+        try {
+            if($stmt = $pdo->prepare($sql)){
+                // Bind variables to the prepared statement as parameters
+                $stmt->bindParam(1, $param_username, PDO::PARAM_STR);
                 
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $is_admin);
-                    if(mysqli_stmt_fetch($stmt)){
+                // Set parameters
+                $param_username = $username;
+                
+                // Attempt to execute the prepared statement
+                if($stmt->execute()){
+                    // Check if username exists, if yes then verify password
+                    if($stmt->rowCount() == 1){
+                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $id = $row['user_id'];
+                        $username = $row['username'];
+                        $hashed_password = $row['password'];
+                        $is_admin = $row['is_admin'];
+
                         // Debugging: Output the entered password and the hashed password from DB
                         echo "<pre>";
                         echo "Entered Password: " . htmlspecialchars($password) . "\n";
@@ -87,14 +88,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
-
-            // Close statement
-            mysqli_stmt_close($stmt);
+        } catch (PDOException $e) {
+            echo "Oops! Something went wrong. Please try again later. " . $e->getMessage();
         }
     }
     
-    // Close connection
-    mysqli_close($conn);
+    // PDO does not require explicit close
 }
 ?>
  

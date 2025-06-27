@@ -18,15 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (empty($errors)) {
             $insert_sql = "INSERT INTO tour_categories (category_name) VALUES (?)";
-            if ($stmt = mysqli_prepare($conn, $insert_sql)) {
-                mysqli_stmt_bind_param($stmt, "s", $category_name);
-                if (mysqli_stmt_execute($stmt)) {
+            if ($stmt = $pdo->prepare($insert_sql)) {
+                $stmt->bindParam(1, $category_name);
+                if ($stmt->execute()) {
                     header("location: categories.php");
                     exit();
                 } else {
-                    $errors[] = "Error: Could not execute query. " . mysqli_error($conn);
+                    $errors[] = "Error: Could not execute query. " . $stmt->errorInfo()[2];
                 }
-                mysqli_stmt_close($stmt);
             }
         }
     } elseif (isset($_POST['edit_category'])) {
@@ -39,15 +38,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (empty($errors)) {
             $update_sql = "UPDATE tour_categories SET category_name = ? WHERE category_id = ?";
-            if ($stmt = mysqli_prepare($conn, $update_sql)) {
-                mysqli_stmt_bind_param($stmt, "si", $category_name, $category_id);
-                if (mysqli_stmt_execute($stmt)) {
+            if ($stmt = $pdo->prepare($update_sql)) {
+                $stmt->bindParam(1, $category_name);
+                $stmt->bindParam(2, $category_id);
+                if ($stmt->execute()) {
                     header("location: categories.php");
                     exit();
                 } else {
-                    $errors[] = "Error: Could not execute query. " . mysqli_error($conn);
+                    $errors[] = "Error: Could not execute query. " . $stmt->errorInfo()[2];
                 }
-                mysqli_stmt_close($stmt);
             }
         }
     }
@@ -57,25 +56,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if (isset($_GET['delete_id']) && !empty(trim($_GET['delete_id']))) {
     $delete_id = trim($_GET['delete_id']);
     $delete_sql = "DELETE FROM tour_categories WHERE category_id = ?";
-    if ($stmt = mysqli_prepare($conn, $delete_sql)) {
-        mysqli_stmt_bind_param($stmt, "i", $delete_id);
-        if (mysqli_stmt_execute($stmt)) {
+    if ($stmt = $pdo->prepare($delete_sql)) {
+        $stmt->bindParam(1, $delete_id);
+        if ($stmt->execute()) {
             header("location: categories.php");
             exit();
         } else {
-            $errors[] = "Error: Could not delete category. " . mysqli_error($conn);
+            $errors[] = "Error: Could not delete category. " . $stmt->errorInfo()[2];
         }
-        mysqli_stmt_close($stmt);
     }
 }
 
 // Fetch all categories
 $sql = "SELECT * FROM tour_categories ORDER BY category_name ASC";
-$result = mysqli_query($conn, $sql);
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if (!$result) {
-    die("Error fetching categories: " . mysqli_error($conn));
-}
 ?>
 
 <!DOCTYPE html>
@@ -134,8 +131,8 @@ if (!$result) {
                         </thead>
                         <tbody>
                             <?php
-                            if (mysqli_num_rows($result) > 0) {
-                                while ($row = mysqli_fetch_assoc($result)) {
+                            if (count($categories) > 0) {
+                                foreach ($categories as $row) {
                                     echo "<tr>";
                                     echo "<td>" . $row['category_id'] . "</td>";
                                     echo "<td>" . $row['category_name'] . "</td>";
