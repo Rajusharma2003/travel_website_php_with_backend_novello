@@ -158,7 +158,7 @@ if ($gallery_result === false) {
     <div class="container-fluid">
         <div class="row">
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <h1 class="mt-4">Gallery Management</h1>
+                <h1>Gallery Management</h1>
                 
                 <?php if (isset($error_message)): ?>
                     <div class="alert alert-danger"><?php echo htmlspecialchars($error_message); ?></div>

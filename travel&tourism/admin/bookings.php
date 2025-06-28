@@ -94,6 +94,7 @@ try {
                                                 Update Status
                                             </button>
                                             <a href="view_booking.php?id=<?php echo $booking['booking_id']; ?>" class="btn btn-primary btn-sm">View</a>
+                                            <a href="edit_booking.php?id=<?php echo $booking['booking_id']; ?>" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

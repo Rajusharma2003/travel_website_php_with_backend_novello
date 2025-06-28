@@ -15,6 +15,7 @@ if (!isset($_SESSION['admin_id'])) {
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+    
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="index.php">Travel Management</a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,9 +84,39 @@ if (!isset($_SESSION['admin_id'])) {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'settings.php') ? 'active' : ''; ?>" href="settings.php">
+                            <a class="nav-link collapsed" href="#settingsSubmenu" data-toggle="collapse" aria-expanded="false" aria-controls="settingsSubmenu">
                                 <i class="fas fa-cog"></i> Settings
+                                <span class="float-right"><i class="fas fa-chevron-down"></i></span>
                             </a>
+                            <div class="collapse" id="settingsSubmenu">
+                                <ul class="nav flex-column ml-3">
+                                    <li class="nav-item">
+                                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'profile.php') ? 'active' : ''; ?>" href="profile.php">
+                                            <i class="fas fa-user"></i> Profile
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'settings.php') ? 'active' : ''; ?>" href="settings.php">
+                                            <i class="fas fa-sliders-h"></i> Settings
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'terms.php') ? 'active' : ''; ?>" href="terms.php">
+                                            <i class="fas fa-file-alt"></i> Terms & Conditions
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'privacy.php') ? 'active' : ''; ?>" href="privacy.php">
+                                            <i class="fas fa-user-secret"></i> Privacy Policy
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'refund.php') ? 'active' : ''; ?>" href="refund.php">
+                                            <i class="fas fa-undo-alt"></i> Refund Policy
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                     </ul>
                 </div>
