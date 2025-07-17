@@ -1,0 +1,165 @@
+/* Home Page Specific Styles */
+
+/* Hero Carousel Enhancements */
+#hero-carousel .carousel-item {
+    height: 100vh;
+    min-height: 500px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+#hero-carousel .carousel-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0 0 0 / 34%);
+}
+
+#hero-carousel .carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    z-index: 10;
+}
+
+#hero-carousel .carousel-caption h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#hero-carousel .carousel-caption .btn {
+    margin-top: 20px;
+}
+
+/* Featured Tours Section */
+#featured-tours .card,
+#packages .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#featured-tours .card:hover,
+#packages .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+#featured-tours .card-img-top,
+#packages .card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+#featured-tours .card-body,
+#packages .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+#featured-tours .btn-outline-primary,
+#packages .btn-outline-primary {
+    align-self: flex-end;
+}
+
+#featured-tours .card-text,
+#packages .card-text {
+    flex-grow: 1;
+}
+
+/* Testimonials Section */
+#testimonials .card {
+    background-color: #f8f9fa;
+    border: none;
+}
+
+#testimonials .card-text {
+    font-style: italic;
+    color: #6c757d;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero-carousel .carousel-item {
+        height: 60vh;
+    }
+    
+    .hero-carousel .carousel-caption {
+        padding: 10px;
+    }
+    
+    .hero-carousel .carousel-caption h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-carousel .carousel-caption .lead {
+        font-size: 1rem;
+    }
+}
+
+/* Contact Section */
+#contact form {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    max-width: 500px;
+}
+
+#contact form input,
+#contact form textarea {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease;
+}
+
+#contact form input:focus,
+#contact form textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+} 
+
+/* Owl Carousel Featured Tours Styles */
+.featured-tours-carousel .owl-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.featured-tours-carousel .owl-nav button {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    color: #007bff !important;
+    margin: 0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.featured-tours-carousel .owl-nav button:hover {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
+.featured-tours-carousel .owl-nav button.owl-prev {
+    margin-left: -20px;
+}
+
+.featured-tours-carousel .owl-nav button.owl-next {
+    margin-right: -20px;
+}
+
+.featured-tours-carousel .tour-item {
+    padding: 10px;
+} 

@@ -1,0 +1,121 @@
+/* Profile Page Styles */
+.profile-container {
+    background-color: #f4f6f9;
+    padding-top: 150px; /* Increased from 50px to account for fixed navbar */
+    padding-bottom: 50px;
+}
+
+.profile-sidebar {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.profile-avatar img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 4px solid #007bff;
+}
+
+.profile-avatar h3 {
+    margin-top: 15px;
+    color: #333;
+}
+
+.profile-menu .nav-link {
+    color: #6c757d;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+}
+
+.profile-menu .nav-link:hover,
+.profile-menu .nav-link.active {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+.profile-menu .nav-link i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.profile-content .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-content .card-header {
+    background-color: #f8f9fa;
+    border-bottom: none;
+    padding: 15px 20px;
+}
+
+.profile-content .card-header h4 {
+    margin-bottom: 0;
+    color: #333;
+}
+
+.profile-content .form-control {
+    border-radius: 5px;
+}
+
+.profile-content .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.profile-content .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: all 0.3s ease;
+}
+
+.profile-content .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Bookings Table Styles */
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead {
+    background-color: #f8f9fa;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.table-striped tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profile-container {
+        padding-top: 80px; /* Reduced from 100px for mobile screens */
+        padding-bottom: 20px;
+    }
+    
+    .profile-sidebar,
+    .profile-content .card {
+        margin-bottom: 15px;
+    }
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.4em 0.6em;
+    border-radius: 0.25rem;
+} 
